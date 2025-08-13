@@ -9,7 +9,7 @@ const shopProductsRouter = require('./routes/shop/products-route')
 const shopCartRouter = require('./routes/shop/cart-routes')
 
 // connect to mongodb
-mongooose.connect("mongodb+srv://sayanmodak242001:imFPOPu9K2n9Lg4H@cluster0.5utnkya.mongodb.net/").then(() => {
+mongooose.connect("mongodb+srv:/Lg4H@cluster0.5utnkya.mongodb.net/").then(() => {
    console.log("MongoDb connection is Successfull")
 }).catch((error) => console.log(error))
 
