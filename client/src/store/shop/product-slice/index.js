@@ -22,7 +22,7 @@ const initialState = {
 export const fetchAllFilteredProducts = createAsyncThunk(
    "products/fetchAllProducts",
    async ({ filterParams, sortParams }) => {
-      console.log({ ...filterParams })
+      console.log("in the slice", { ...filterParams })
 
       const query = new URLSearchParams({
          ...filterParams,
@@ -35,7 +35,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
          `http://localhost:5000/api/shop/products/get?${query}`
       );
 
-      // console.log(result);
+      console.log("result", result);
 
       return result?.data;
    }
@@ -57,7 +57,11 @@ export const fetchProductDetails = createAsyncThunk('product/product-details',
 const shoppingProductSlice = createSlice({
    name: "shoppingProducts",
    initialState,
-   reducers: {},
+   reducers: {
+      setProductDetails: (state) => {
+         state.productDetails = null
+      }
+   },
    extraReducers: (builder) => {
       builder
          .addCase(fetchAllFilteredProducts.pending, (state, action) => {
@@ -85,5 +89,5 @@ const shoppingProductSlice = createSlice({
    },
 });
 
-
+export const { setProductDetails } = shoppingProductSlice.actions
 export default shoppingProductSlice.reducer

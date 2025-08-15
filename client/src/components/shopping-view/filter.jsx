@@ -20,18 +20,19 @@ function ProductFilter({ filters, handleFilter }) {
                 {filterOptions[keyItem].map((option) => (
                   <Label className="flex font-medium items-center gap-2 ">
                     <Checkbox
-                    // we set the filter values on the local stoeage and after refresh we want to get checked so have to save the checkeed value
+                      // we set the filter values on the local stoeage and after refresh we want to get checked so have to save the checkeed value
 
-                    // 
+                      //
                       checked={
                         filters &&
                         Object.keys(filters).length > 0 &&
                         filters[keyItem] &&
-                        filters[keyItem].indexOf(option.id) > -1
+                        filters[keyItem].indexOf(option.label) > -1
                       }
-                      
                       // here to get the value to the filters have to set
-                      onCheckedChange={() => handleFilter(keyItem, option.id)}
+                      onCheckedChange={() =>
+                        handleFilter(keyItem, option.label)
+                      }
                     />
                     {option.label}
                   </Label>

@@ -1,5 +1,11 @@
-function AdminOrders() {
-  return <div className="px-10">admin orders</div>;
+import AdminOrdersView from "@/components/admin-view/orders";
+
+function AdminView() {
+  return (
+    <div className="">
+      <AdminOrdersView />
+    </div>
+  );
 }
 
-export default AdminOrders;
+export default AdminView;

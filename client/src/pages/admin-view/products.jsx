@@ -40,7 +40,7 @@ function AdminProducts() {
   const [uploadImageUrl, setUploadImageUrl] = useState("");
   // have to store the current edited id
   const [currentEditedId, setCurrentEditedId] = useState(null);
-  console.log("currentedited id", currentEditedId);
+
   const dispatch = useDispatch();
 
   const { productList } = useSelector((state) => state.adminProducts);
@@ -56,7 +56,8 @@ function AdminProducts() {
           })
         ).then((data) => {
           if (data?.payload?.success) {
-            dispatch(fetchAllProducts()), setFormData(initialFormData);
+            dispatch(fetchAllProducts());
+            setFormData(initialFormData);
             setOpenCreateProductsDialog(false);
             setCurrentEditedId(null);
           }
@@ -101,7 +102,15 @@ function AdminProducts() {
   return (
     <Fragment>
       <div className="mb-5 w-full flex justify-end px-1.5 my-8">
-        <Button onClick={() => setOpenCreateProductsDialog(true)}>
+        <Button
+          onClick={() => {
+            setOpenCreateProductsDialog(true);
+            setCurrentEditedId(null);
+            setFormData(initialFormData);
+            setImageFile(null);
+            setUploadImageUrl("");
+          }}
+        >
           Add New Product
         </Button>
       </div>
@@ -131,6 +140,7 @@ function AdminProducts() {
               {currentEditedId !== null ? "Edit Product" : "Add New Product"}
             </SheetTitle>
           </SheetHeader>
+
           {/* have to upload product image here */}
           <ProductImageUpload
             imageFile={imageFile}

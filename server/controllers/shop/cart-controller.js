@@ -74,8 +74,8 @@ const fetchCartItems = async (req, res) => {
 
 
       if (validItems.length < cart.items.length) {
-         cart.items = validItems,
-            await cart.save();
+         cart.items = validItems;
+         await cart.save();
       }
 
       const populateCartItems = validItems.map((item) => ({
@@ -103,6 +103,7 @@ const fetchCartItems = async (req, res) => {
       });
    }
 }
+
 const updateCartQuantity = async (req, res) => {
    try {
       const { userId, productId, quantity } = req.body;

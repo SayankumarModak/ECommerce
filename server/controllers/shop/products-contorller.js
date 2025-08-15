@@ -23,6 +23,7 @@ const Product = require("../../models/Product");
 const getFilteredProducts = async (req, res) => {
    try {
       const { category = [], brand = [], sortBy = "price-lowtohigh" } = req.query;
+      console.log("the query is in the backedn:", req.query)
 
       let filters = {};
 
@@ -62,13 +63,15 @@ const getFilteredProducts = async (req, res) => {
             break;
       }
 
+      console.log("the filters are", filters)
       const products = await Product.find(filters).sort(sort);
+      console.log("products are:", products)
 
       res.status(200).json({
          success: true,
          data: products,
       });
-   } catch (e) {
+   } catch (error) {
       console.log(error);
       res.status(500).json({
          success: false,
