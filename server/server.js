@@ -22,14 +22,14 @@ const commonFeatureRouter = require('./routes/common/feature-routes')
 
 // connect to mongodb
 
-mongoose.connect(`${process.env.MONGODB_URL}`).then(() => {
+mongoose.connect(process.env.MONGODB_URL).then(() => {
    console.log("MongoDb connection is Successfull")
 }).catch((error) => console.log(error))
 
 
 const PORT = process.env.PORT || 5000
 app.use((req, res, next) => {
-  const allowedOrigins = `${process.env.CLIENT_BASE_URL}`,
+  const allowedOrigins =process.env.CLIENT_BASE_URL,
      
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -52,7 +52,7 @@ app.use((req, res, next) => {
 
 // Also keep the cors middleware as backup
 app.use(cors({
-  origin: `${process.env.CLIENT_BASE_URL}`,
+  origin:process.env.CLIENT_BASE_URL,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
