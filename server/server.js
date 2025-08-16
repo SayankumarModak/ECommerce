@@ -19,7 +19,9 @@ const shopSearchRouter = require('./routes/shop/search-routes')
 const shopReviewRouter = require("./routes/shop/review-routes");
 const commonFeatureRouter = require('./routes/common/feature-routes')
 
-
+console.log('CLIENT_BASE_URL:', process.env.CLIENT_BASE_URL);
+console.log('MONGODB_URL:', process.env.MONGODB_URL ? 'Connected' : 'Missing');
+console.log('PORT:', process.env.PORT);
 // connect to mongodb
 
 mongoose.connect(process.env.MONGODB_URL).then(() => {
@@ -32,11 +34,11 @@ const PORT = process.env.PORT || 5000
 
 app.use(
   cors({
-    origin:process.env.CLIENT_BASE_URL,
-    methods: ["GET", "POST", "DELETE", "PUT"],
+    origin: process.env.CLIENT_BASE_URL,
+    methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"], // Added OPTIONS
     allowedHeaders: [
       "Content-Type",
-      "Authorization",
+      "Authorization", 
       "Cache-Control",
       "Expires",
       "Pragma",
