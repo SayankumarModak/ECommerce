@@ -29,12 +29,8 @@ mongoose.connect(`${process.env.MONGODB_URL}`).then(() => {
 
 const PORT = process.env.PORT || 5000
 app.use((req, res, next) => {
-  const allowedOrigins = [
-    'https://newecom-five.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:5173'
-  ];
-  
+  const allowedOrigins = `${process.env.CLIENT_BASE_URL}`,
+     
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
@@ -56,11 +52,7 @@ app.use((req, res, next) => {
 
 // Also keep the cors middleware as backup
 app.use(cors({
-  origin: [
-    'https://newecom-five.vercel.app',
-    'http://localhost:3000',
-    'http://localhost:5173'
-  ],
+  origin: `${process.env.CLIENT_BASE_URL}`,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -91,5 +83,6 @@ app.use("/api/common/feature", commonFeatureRouter);
 app.listen(PORT, () => {
    console.log(`App is running at port no ${PORT}`)
 })
+
 
 module.exports = app; 
