@@ -9,7 +9,7 @@ const initialState = {
 
 // export const fetchAllFilteredProducts = createAsyncThunk('/product/fetchAllProducts',
 //    async () => {
-//       const response = await axios.get("http://localhost:5000/api/shop/products/get")
+//       const response = await axios.get("${import.meta.env.VITE_API_URL}/api/shop/products/get")
 
 //       // console.log(response?.data, "data in respone inside the fetchallproducts")
 
@@ -32,7 +32,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
 
 
       const result = await axios.get(
-         `http://localhost:5000/api/shop/products/get?${query}`
+         `${import.meta.env.VITE_API_URL}/api/shop/products/get?${query}`
       );
 
       console.log("result", result);
@@ -45,7 +45,7 @@ export const fetchProductDetails = createAsyncThunk('product/product-details',
    async (id) => {
 
       const result = await axios.get(
-         `http://localhost:5000/api/shop/products/get/${id}`
+         `${import.meta.env.VITE_API_URL}/api/shop/products/get/${id}`
       );
       console.log(result?.data)
 

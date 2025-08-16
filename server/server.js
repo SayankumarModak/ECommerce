@@ -1,4 +1,7 @@
+require("dotenv").config()
+
 const express = require('express')
+
 const app = express();
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
@@ -14,16 +17,18 @@ const adminOrderRouter = require('./routes/admin/order-routes')
 
 const shopSearchRouter = require('./routes/shop/search-routes')
 const shopReviewRouter = require("./routes/shop/review-routes");
+const commonFeatureRouter = require('./routes/common/feature-routes')
+
 
 // connect to mongodb
-mongooose.connect("mongodb+srv://sayanmodak242001:imFPOPu9K2n9Lg4H@cluster0.5utnkya.mongodb.net/").then(() => {
+mongooose.connect(`${process.env.MONGODB_URL}`).then(() => {
    console.log("MongoDb connection is Successfull")
 }).catch((error) => console.log(error))
 
 
 const PORT = process.env.PORT || 5000
 app.use(cors({
-   origin: "http://localhost:5173",
+   origin: `${process.env.CLIENT_BASE_URL}`,
    methods: ['GET', 'POST', 'DELETE', 'PUT'],
    allowedHeaders: [
       'Content-Type',
@@ -54,6 +59,7 @@ app.use("/api/shop/search", shopSearchRouter);
 app.use("/api/shop/review", shopReviewRouter);
 
 
+app.use("/api/common/feature", commonFeatureRouter);
 app.listen(PORT, () => {
    console.log(`App is running at port no ${PORT}`)
 })

@@ -8,9 +8,10 @@ function ShoppingProductTile({
   handleGetProductDetails,
   handleAddToCart,
 }) {
+  console.log("the total stock is", product?.totalStock);
   return (
     <Card className="w-full max-w-sm mx-auto group hover:shadow-xl transition-all duration-300 overflow-hidden bg-white">
-      <div 
+      <div
         onClick={() => handleGetProductDetails(product?._id)}
         className="cursor-pointer"
       >
@@ -22,28 +23,33 @@ function ShoppingProductTile({
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />
           </div>
-          
+
           {/* Overlay with product info on hover */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-              <p className="text-sm font-medium">{categoryOptionsMap[product?.category]}</p>
-              <p className="text-sm opacity-80">{brandOptionsMap[product?.brand]}</p>
+              <p className="text-sm font-medium">
+                {categoryOptionsMap[product?.category]}
+              </p>
+              <p className="text-sm opacity-80">
+                {brandOptionsMap[product?.brand]}
+              </p>
             </div>
           </div>
 
           {/* Status badges */}
-          <div className="absolute top-2 left-2 flex flex-col gap-2">
-            {product?.totalStock === 0 ? (
-              <Badge className="bg-red-500 hover:bg-red-600 text-white animate-pulse">
+          <div className="absolute top-2 left-2 flex flex-col gap-2 z-20">
+            {Number(product?.totalStock) === 0 && (
+              <Badge className="px-3 py-1.5 text-[13px] font-bold bg-red-500/95 text-white border border-white/20 shadow-lg animate-pulse">
                 Out Of Stock
               </Badge>
-            ) : product?.totalStock < 10 ? (
-              <Badge className="bg-amber-500 hover:bg-amber-600 text-white">
+            )}
+            {Number(product?.totalStock) > 0 && Number(product?.totalStock) < 10 && (
+              <Badge className="px-3 py-1.5 text-[13px] font-bold bg-amber-500/95 text-white border border-white/20 shadow-lg">
                 Only {product?.totalStock} left
               </Badge>
-            ) : null}
-            {product?.salePrice > 0 && (
-              <Badge className="bg-emerald-500 hover:bg-emerald-600 text-white">
+            )}
+            {Number(product?.salePrice) > 0 && (
+              <Badge className="px-3 py-1.5 text-[13px] font-bold bg-emerald-500/95 text-white border border-white/20 shadow-lg">
                 Sale
               </Badge>
             )}
@@ -54,17 +60,15 @@ function ShoppingProductTile({
           <h2 className="text-lg font-bold mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
             {product?.title}
           </h2>
-          
+
           <div className="flex items-end justify-between">
             <div className="space-y-1">
-              <p className="text-sm font-medium text-muted-foreground">
-                Price
-              </p>
+              <p className="text-sm font-medium text-muted-foreground">Price</p>
               <div className="flex items-center gap-2">
                 <span
                   className={`${
-                    product?.salePrice > 0 
-                      ? "text-sm line-through text-muted-foreground" 
+                    product?.salePrice > 0
+                      ? "text-sm line-through text-muted-foreground"
                       : "text-xl font-bold text-primary"
                   }`}
                 >
@@ -83,7 +87,7 @@ function ShoppingProductTile({
 
       <CardFooter className="p-4 pt-0">
         {product?.totalStock === 0 ? (
-          <Button 
+          <Button
             className="w-full opacity-60 cursor-not-allowed bg-gray-200 hover:bg-gray-200"
             disabled
           >

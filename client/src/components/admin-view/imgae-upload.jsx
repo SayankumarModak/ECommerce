@@ -11,6 +11,7 @@ function ProductImageUpload({
   uploadImageUrl,
   isEditedMode,
   setUploadImageUrl,
+  imageLoadingState,
 }) {
   const inputRef = useRef(null);
 
@@ -48,19 +49,23 @@ function ProductImageUpload({
     const data = new FormData();
     data.append("my_file", imageFile);
     const response = await axios.post(
-      "http://localhost:5000/api/admin/products/upload-image",
+      `${import.meta.env.VITE_API_URL}/api/admin/products/upload-image`,
       data
     );
-    // console.log(response, "response");
+
+    console.log(response, "response");
 
     if (response?.data?.success) {
       // console.log("response.data.result.url", response.data.result.url);
       setUploadImageUrl(response.data.result.url);
+      // imageLoadingState(false);
     }
   }
   useEffect(() => {
     if (imageFile != null) uploadImageToCloudinary();
   }, [imageFile]);
+
+  console.log(uploadImageUrl);
 
   return (
     <div className="w-full mx-w-md px-6">

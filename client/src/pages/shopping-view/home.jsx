@@ -32,6 +32,7 @@ import {
 import { addToCart, fetchCartItems } from "@/store/shop/cart-slice";
 import { toast } from "sonner";
 import ShoppingProductTile from "@/components/shopping-view/prduct-tile";
+import { getFeatureImages } from "@/store/common-slice";
 
 const categoriesWithIcon = [
   { id: "men", label: "Men", icon: ShirtIcon },
@@ -55,7 +56,7 @@ function ShoppingHome() {
   const imageList = [
     "/src/assets/banner-1.webp",
     "/src/assets/banner-2.webp",
-    "/src/assets/banner-3.webp"
+    "/src/assets/banner-3.webp",
   ];
   // console.log(imageList);
   const size = imageList.length;
@@ -63,6 +64,7 @@ function ShoppingHome() {
   const dispatch = useDispatch();
   const { productList } = useSelector((state) => state.shopProducts);
   const { user } = useSelector((state) => state.auth);
+  const { featureImageList } = useSelector((state) => state.commonFeature);
 
   function handleNavigateToListingPage(getCurrentItem, section) {
     console.log(sessionStorage.removeItem("filters"));
@@ -81,7 +83,7 @@ function ShoppingHome() {
   }
 
   function handleAddToCart(getCurrentProductId) {
-    console.log(getCurrentProductId,"in the listing");
+    console.log(getCurrentProductId, "in the listing");
     dispatch(
       addToCart({
         userId: user?.id,
@@ -114,33 +116,23 @@ function ShoppingHome() {
   // useEffect(() => {
   //   sessionStorage.setItem("filters", JSON.stringify("")); // Clear the filters
   // }, []);
+  useEffect(() => {
+    dispatch(getFeatureImages());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-50 to-white">
       <div className="relative w-full h-[600px] xl:h-[80vh] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30 z-10"></div>
-        {imageList && imageList.length > 0
-          ? imageList.map((slide, index) => (
-              <div 
-                key={index} 
-                className={`absolute inset-0 ${
+        {featureImageList && featureImageList.length > 0
+          ? featureImageList.map((slide, index) => (
+              <img
+                src={slide?.image}
+                key={index}
+                className={`${
                   index === currentSlide ? "opacity-100" : "opacity-0"
-                } transition-opacity duration-1000`}
-              >
-                <img
-                  src={slide}
-                  alt={`Slide ${index + 1}`}
-                  className={`w-full h-full object-cover transition-transform duration-1000 transform ${
-                    index === currentSlide ? "scale-105" : "scale-100"
-                  }`}
-                  style={{
-                    maxHeight: '100%',
-                    width: '100%',
-                    objectFit: 'cover',
-                    objectPosition: 'center 30%'
-                  }}
-                />
-              </div>
+                } absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000`}
+              />
             ))
           : null}
         <div className="absolute inset-x-0 top-8 z-30">
@@ -163,17 +155,17 @@ function ShoppingHome() {
                 Discover curated collections that define luxury and elegance
               </p>
               <div className="flex gap-4 justify-center">
-                <Button 
+                <Button
                   size="lg"
-                  onClick={() => navigate('/shop/listing')}
+                  onClick={() => navigate("/shop/listing")}
                   className="bg-white text-black hover:bg-white/90 hover:scale-105 transform transition-all duration-300 text-lg px-8 py-6"
                 >
                   Explore Collection
                 </Button>
-                <Button 
+                <Button
                   size="lg"
                   variant="outline"
-                  onClick={() => navigate('/shop/new-arrivals')}
+                  onClick={() => navigate("/shop/listing")}
                   className="border-white text-white hover:bg-white/10 hover:scale-105 transform transition-all duration-300 text-lg px-8 py-6"
                 >
                   New Arrivals
@@ -197,7 +189,9 @@ function ShoppingHome() {
         <Button
           variant="outline"
           size="icon"
-          onClick={() => setCurrentSlide((prevSlide) => (prevSlide - 1 + size) % size)}
+          onClick={() =>
+            setCurrentSlide((prevSlide) => (prevSlide - 1 + size) % size)
+          }
           className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-white/10 hover:bg-white/20 border-none text-white z-20 rounded-full"
         >
           <ChevronLeftIcon className="w-6 h-6" />
@@ -221,20 +215,25 @@ function ShoppingHome() {
               Curated Categories
             </h2>
             <p className="text-lg text-muted-foreground">
-              Explore LUXORA's handpicked collections, where luxury meets style in every category
+              Explore LUXORA's handpicked collections, where luxury meets style
+              in every category
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
             {categoriesWithIcon.map((categoryItem) => (
               <Card
                 key={categoryItem.id}
-                onClick={() => handleNavigateToListingPage(categoryItem, "category")}
+                onClick={() =>
+                  handleNavigateToListingPage(categoryItem, "category")
+                }
                 className="group cursor-pointer hover-scale shadow-custom-hover overflow-hidden bg-white/50 backdrop-blur-sm"
               >
                 <CardContent className="flex flex-col items-center justify-center p-8 relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent group-hover:opacity-100 transition-opacity" />
                   <categoryItem.icon className="w-16 h-16 mb-4 text-primary group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold text-lg">{categoryItem.label}</span>
+                  <span className="font-semibold text-lg">
+                    {categoryItem.label}
+                  </span>
                 </CardContent>
               </Card>
             ))}
@@ -251,7 +250,8 @@ function ShoppingHome() {
               Luxury Brands
             </h2>
             <p className="text-lg text-muted-foreground">
-              LUXORA partners with the world's most prestigious fashion houses to bring you unparalleled quality
+              LUXORA partners with the world's most prestigious fashion houses
+              to bring you unparalleled quality
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
@@ -264,7 +264,9 @@ function ShoppingHome() {
                 <CardContent className="flex flex-col items-center justify-center p-8 relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent group-hover:opacity-100 transition-opacity" />
                   <brandItem.icon className="w-16 h-16 mb-4 text-secondary group-hover:scale-110 transition-transform" />
-                  <span className="font-semibold text-lg">{brandItem.label}</span>
+                  <span className="font-semibold text-lg">
+                    {brandItem.label}
+                  </span>
                 </CardContent>
               </Card>
             ))}
@@ -276,40 +278,57 @@ function ShoppingHome() {
           <div className="text-center mb-16 max-w-3xl mx-auto">
             <div className="flex items-center justify-center gap-4 mb-8">
               <div className="w-12 h-[2px] bg-gradient-to-r from-primary to-transparent rounded-full"></div>
-              <span className="text-lg font-medium text-primary">LUXORA Exclusives</span>
+              <span className="text-lg font-medium text-primary">
+                LUXORA Exclusives
+              </span>
               <div className="w-12 h-[2px] bg-gradient-to-l from-primary to-transparent rounded-full"></div>
             </div>
             <h2 className="text-4xl md:text-5xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-primary">
               Featured Collection
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Discover our most coveted pieces, carefully selected to define the epitome of luxury fashion
+              Discover our most coveted pieces, carefully selected to define the
+              epitome of luxury fashion
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {productList && productList.length > 0
-              ? productList.map((productItem) => (
-                  <div key={productItem._id} className="fade-in" style={{ animationDelay: `${productList.indexOf(productItem) * 0.1}s` }}>
-                    <ShoppingProductTile
-                      handleGetProductDetails={handleGetProductDetails}
-                      product={productItem}
-                      handleAddToCart={handleAddToCart}
-                    />
-                  </div>
-                ))
-              : (
-                <div className="col-span-full text-center py-12">
-                  <p className="text-muted-foreground text-lg">Loading amazing products...</p>
+            {productList && productList.length > 0 ? (
+              productList.map((productItem) => (
+                <div
+                  key={productItem._id}
+                  className="fade-in"
+                  style={{
+                    animationDelay: `${
+                      productList.indexOf(productItem) * 0.1
+                    }s`,
+                  }}
+                >
+                  <ShoppingProductTile
+                    handleGetProductDetails={handleGetProductDetails}
+                    product={productItem}
+                    handleAddToCart={handleAddToCart}
+                  />
                 </div>
-              )}
+              ))
+            ) : (
+              <div className="col-span-full text-center py-12">
+                <p className="text-muted-foreground text-lg">
+                  Loading amazing products...
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
-      
+
       <section className="bg-gradient-to-r from-primary to-secondary py-20 text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Join Our Newsletter</h2>
-          <p className="text-lg mb-8 text-white/90">Stay updated with our latest trends and products</p>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            Join Our Newsletter
+          </h2>
+          <p className="text-lg mb-8 text-white/90">
+            Stay updated with our latest trends and products
+          </p>
           <div className="max-w-md mx-auto flex gap-4">
             <input
               type="email"

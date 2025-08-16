@@ -8,6 +8,8 @@ import shopOrderSlice from "./shop/order-slice/index"
 import adminOrderSlice from "./admin-slice/order-slice/index"
 import shopSearchSlice from './shop/search-slice/index'
 import shopReviewSlice from './shop/review-slice/index'
+import commonFeatureSlice from './common-slice/index'
+
 
 const store = configureStore({
    reducer: {
@@ -22,7 +24,9 @@ const store = configureStore({
       shopOrder: shopOrderSlice,//there can be issue as name changed
 
       shopSearch: shopSearchSlice,
-      shopReview: shopReviewSlice
+      shopReview: shopReviewSlice,
+
+      commonFeature: commonFeatureSlice,
    }
 });
 

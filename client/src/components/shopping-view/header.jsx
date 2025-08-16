@@ -35,7 +35,7 @@ function MenuItems() {
     const currentFilter =
       getCurrentMenuItem.id !== "home" &&
       getCurrentMenuItem.id !== "products" &&
-      getCurrentMenuItem.id !== "search"
+      getCurrentMenuItem.id !== "Search"
         ? {
             category: [getCurrentMenuItem.id],
           }
@@ -49,7 +49,7 @@ function MenuItems() {
       : navigate(getCurrentMenuItem.path);
   }
   return (
-    <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row">
+    <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center gap-6 lg:flex-row px-2">
       {shoppingViewHeaderMenuItems.map((menuItem) => (
         <Label
           onClick={() => handleNavigate(menuItem)}
@@ -79,7 +79,7 @@ function HeaderRightContent() {
   }, [dispatch]);
 
   return (
-    <div className="flex lg:items-center lg:flex-row flex-col gap-4">
+    <div className="flex lg:items-center lg:flex-row flex-col gap-4 ">
       {/* have to wrap with  sheet to open on click of the button */}
       {/* create cart wrapper cand cart items content */}
       <Sheet open={openCartSheet} onOpenChange={() => setOpenCartSheet(false)}>
@@ -134,29 +134,56 @@ function HeaderRightContent() {
 
 function ShoppingHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background">
-      <div className="flex h-16 items-center justify-between px-4 md:px-6">
-        <Link to="/shop/home" className="flex items-center gap-2">
-          <HousePlug className="h-6 w-6" />
-          <span className="font-bold">ECommerce</span>
-        </Link>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="lg:hidden">
-              <Menu />
-              <span className="sr-only">Toggle Header Menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-lg bg-background/80 border-b border-slate-200/80 shadow-sm">
+      <div className="container mx-auto">
+        <div className="flex h-16 items-center justify-between px-4">
+          {/* Logo */}
+          <Link 
+            to="/shop/home" 
+            className="flex items-center gap-2 transition-transform hover:scale-105"
+          >
+            <div className="p-1.5 bg-gradient-to-tr from-primary to-primary/80 text-white rounded-lg">
+              <HousePlug className="h-6 w-6" />
+            </div>
+            <span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
+              LUXORA
+            </span>
+          </Link>
+
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="lg:hidden hover:bg-primary/10"
+              >
+                <Menu className="h-6 w-6 text-primary" />
+                <span className="sr-only">Toggle Header Menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent 
+              side="left" 
+              className="w-full max-w-xs border-r border-slate-200/80 backdrop-blur-lg bg-background/95"
+            >
+              <div className="flex flex-col h-full">
+                <MenuItems />
+                <div className="mt-auto pb-6">
+                  <HeaderRightContent />
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+
+          {/* Desktop Menu */}
+          <nav className="hidden lg:block flex-1 px-10">
             <MenuItems />
+          </nav>
+
+          {/* Right Content */}
+          <div className="hidden lg:block">
             <HeaderRightContent />
-          </SheetContent>
-        </Sheet>
-        <div className="hidden lg:block">
-          <MenuItems />
-        </div>
-        <div className="hidden lg:block">
-          <HeaderRightContent />
+          </div>
         </div>
       </div>
     </header>
