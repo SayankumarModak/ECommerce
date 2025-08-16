@@ -64,3 +64,5 @@ app.use("/api/common/feature", commonFeatureRouter);
 app.listen(PORT, () => {
    console.log(`App is running at port no ${PORT}`)
 })
+
+module.exports = app; 
