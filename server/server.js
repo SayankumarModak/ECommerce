@@ -38,7 +38,7 @@ app.use(
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"], // Added OPTIONS
     allowedHeaders: [
       "Content-Type",
-      "Authorization", 
+      "Authorization",
       "Cache-Control",
       "Expires",
       "Pragma",
@@ -46,6 +46,12 @@ app.use(
     credentials: true,
   })
 );
+
+
+app.options("*", cors({
+  origin: process.env.CLIENT_BASE_URL,
+  credentials: true
+}));
 
 
 app.use(cookieParser())
