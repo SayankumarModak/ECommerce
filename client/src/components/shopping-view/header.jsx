@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "../ui/avatar";
-import { logout } from "@/store/auth-slice/auth-slice";
+import { logout, resetTokenCredentials } from "@/store/auth-slice/auth-slice";
 import UserCartWrapper from "./cart-wrapper";
 import { useEffect, useState } from "react";
 import { fetchCartItems } from "@/store/shop/cart-slice";
@@ -71,7 +71,10 @@ function HeaderRightContent() {
   const { cartItems } = useSelector((state) => state.shopCart);
 
   function handleLogout() {
-    dispatch(logout());
+    // dispatch(logout());
+    dispatch(resetTokenCredentials());
+    sessionStorage.clear();
+    navigate("/auth/login");
   }
 
   useEffect(() => {
@@ -138,8 +141,8 @@ function ShoppingHeader() {
       <div className="container mx-auto">
         <div className="flex h-16 items-center justify-between px-4">
           {/* Logo */}
-          <Link 
-            to="/shop/home" 
+          <Link
+            to="/shop/home"
             className="flex items-center gap-2 transition-transform hover:scale-105"
           >
             <div className="p-1.5 bg-gradient-to-tr from-primary to-primary/80 text-white rounded-lg">
@@ -153,17 +156,17 @@ function ShoppingHeader() {
           {/* Mobile Menu */}
           <Sheet>
             <SheetTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon" 
+              <Button
+                variant="ghost"
+                size="icon"
                 className="lg:hidden hover:bg-primary/10"
               >
                 <Menu className="h-6 w-6 text-primary" />
                 <span className="sr-only">Toggle Header Menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent 
-              side="left" 
+            <SheetContent
+              side="left"
               className="w-full max-w-xs border-r border-slate-200/80 backdrop-blur-lg bg-background/95"
             >
               <div className="flex flex-col h-full">

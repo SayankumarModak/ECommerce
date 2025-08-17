@@ -70,13 +70,24 @@ const loginUser = async (req, res) => {
          expiresIn: '60m'
       })
 
-      res.cookie("token", token, {
-         httpOnly: true,
-         secure: true,
-         samesite: "none"
-      }).json({
+      // res.cookie("token", token, {
+      //    httpOnly: true,
+      //    secure: true,
+      //    samesite: "none"
+      // }).json({
+      //    success: true,
+      //    message: "User logged in successfully",
+      //    user: {
+      //       email: checkUser.email,
+      //       role: checkUser.role,
+      //       id: checkUser._id,
+      //       userName: checkUser.userName,
+      //    }
+      // })
+      res.status(200).json({
          success: true,
-         message: "User logged in successfully",
+         message: "logged in successfull!",
+         token,
          user: {
             email: checkUser.email,
             role: checkUser.role,
@@ -110,11 +121,36 @@ const logoutUser = (req, res) => {
 
 
 // need middleware so when we try to login we have to check their role and redirect
+// const authMiddleware = async (req, res, next) => {
+//    try {
+
+//       const token = req.cookies.token;
+//       // console.log("token is", token)
+//       if (!token) {
+//          return res.json({
+//             success: false,
+//             message: "Unauthorized User"
+//          })
+//       }
+//       const decoded = jwt.verify(token, ' SECRET_KEY')
+//       req.user = decoded;
+//       // console.log("reached here")
+//       next();
+
+//    } catch (error) {
+//       console.log(error)
+//       res.status(401).json({
+//          success: false,
+//          message: "Unauthorised user!",
+//       });
+//    }
+// }
+
 const authMiddleware = async (req, res, next) => {
    try {
 
-      const token = req.cookies.token;
-      // console.log("token is", token)
+      const authHeader = req.headers['Authorization'];
+      const token = authHeader && authHeader.split(' ')[1]
       if (!token) {
          return res.json({
             success: false,
