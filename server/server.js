@@ -22,14 +22,15 @@ const commonFeatureRouter = require('./routes/common/feature-routes')
 
 // connect to mongodb
 
-mongooose.connect(`${process.env.MONGODB_URL}`).then(() => {
+mongooose.connect(process.env.MONGODB_URL).then(() => {
    console.log("MongoDb connection is Successfull")
 }).catch((error) => console.log(error))
 
 
 const PORT = process.env.PORT || 5000
+
 app.use(cors({
-   origin: `${process.env.CLIENT_BASE_URL}`,
+   origin: process.env.CLIENT_BASE_URL,
    methods: ['GET', 'POST', 'DELETE', 'PUT'],
    allowedHeaders: [
       'Content-Type',
@@ -61,6 +62,7 @@ app.use("/api/shop/review", shopReviewRouter);
 
 
 app.use("/api/common/feature", commonFeatureRouter);
+
 app.listen(PORT, () => {
    console.log(`App is running at port no ${PORT}`)
 })
