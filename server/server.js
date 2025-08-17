@@ -34,7 +34,7 @@ const PORT = process.env.PORT || 5000
 
 app.use(
   cors({
-    origin: process.env.CLIENT_BASE_URL,
+    origin:"https://ecomclient-ashy.vercel.app",
     methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"], // Added OPTIONS
     allowedHeaders: [
       "Content-Type",
@@ -48,10 +48,6 @@ app.use(
 );
 
 
-app.options("*", cors({
-  origin: process.env.CLIENT_BASE_URL,
-  credentials: true
-}));
 
 
 app.use(cookieParser())
