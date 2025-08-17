@@ -71,6 +71,11 @@ app.use("/api/shop/review", shopReviewRouter);
 
 
 app.use("/api/common/feature", commonFeatureRouter);
+
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
+
 app.listen(PORT, () => {
    console.log(`App is running at port no ${PORT}`)
 })
