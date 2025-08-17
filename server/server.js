@@ -5,7 +5,7 @@ const express = require('express')
 const app = express();
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
-const mongooose = require('mongoose')
+const mongoose = require('mongoose')
 const authRouter = require('./routes/auth/auth-routes')
 const adminProductsRouter = require('./routes/admin/products-routes')
 const shopProductsRouter = require('./routes/shop/products-route')
@@ -19,16 +19,23 @@ const shopSearchRouter = require('./routes/shop/search-routes')
 const shopReviewRouter = require("./routes/shop/review-routes");
 const commonFeatureRouter = require('./routes/common/feature-routes')
 
-
+console.log('CLIENT_BASE_URL:', process.env.CLIENT_BASE_URL);
+console.log('MONGODB_URL:', process.env.MONGODB_URL ? 'Connected' : 'Missing');
+console.log('PORT:', process.env.PORT);
 // connect to mongodb
 
+<<<<<<< HEAD
 mongooose.connect(process.env.MONGODB_URL).then(() => {
+=======
+mongoose.connect(process.env.MONGODB_URL).then(() => {
+>>>>>>> 71abe4fb26a5349a2ce078c89f80a48dcfd47501
    console.log("MongoDb connection is Successfull")
 }).catch((error) => console.log(error))
 
 
 const PORT = process.env.PORT || 5000
 
+<<<<<<< HEAD
 app.use(cors({
    origin: process.env.CLIENT_BASE_URL,
    methods: ['GET', 'POST', 'DELETE', 'PUT'],
@@ -41,9 +48,30 @@ app.use(cors({
    ],
    credentials: true
 }))
+=======
+
+app.use(
+  cors({
+    origin:"https://ecomclient-ashy.vercel.app",
+    methods: ["GET", "POST", "DELETE", "PUT", "OPTIONS"], // Added OPTIONS
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
+    credentials: true,
+  })
+);
+
+
+
+>>>>>>> 71abe4fb26a5349a2ce078c89f80a48dcfd47501
 
 app.use(cookieParser())
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 
 
@@ -63,8 +91,16 @@ app.use("/api/shop/review", shopReviewRouter);
 
 app.use("/api/common/feature", commonFeatureRouter);
 
+<<<<<<< HEAD
+=======
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
+
+>>>>>>> 71abe4fb26a5349a2ce078c89f80a48dcfd47501
 app.listen(PORT, () => {
    console.log(`App is running at port no ${PORT}`)
 })
+
 
 module.exports = app; 
