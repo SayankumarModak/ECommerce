@@ -12,7 +12,7 @@ export const addToCart = createAsyncThunk(
    "cart/addToCart",
    async ({ userId, productId, quantity }) => {
       const response = await axios.post(
-         `${import.meta.env.VITE_API_URL}/api/shop/cart/add1`,
+         `${import.meta.env.VITE_API_URL}/api/shop/cart/add`,
          {
             userId,
             productId,
